@@ -1,28 +1,50 @@
-import Coord
-
 class Board:
+    board_list = [[0,0,0],
+                  [0,0,0],
+                  [0,0,0]]
+    
     def __init__(self):
-        zero_zero = Coord(0, 0)
-        one_zero = Coord(1, 0)
-        two_zero = Coord(2, 0)
-        zero_one = Coord(0, 1)
-        one_one = Coord(1, 1)
-        two_one = Coord(2, 1)
-        zero_two = Coord(0, 2)
-        one_two = Coord(1, 2)
-        two_two = Coord(2, 2)
-        list = [zero_zero, one_zero, two_zero, zero_one, one_one, two_one, zero_two, one_two, two_two]
-    
-    def circleFlip(self, x, y):
-        for crd in list:
-            if (crd.x == x and crd.y == y):
-                crd.content = 1
-    
-    def squareFlip(self, x, y):
-        for crd in list:
-            if (crd.x == x and crd.y == y):
-                crd.content = 2
+        pass
 
-    def clearBoard(self):
-        for crd in list:
-            crd.content = 0
+    def is_valid_move(self, x, y):
+        if (self.board_list[y][x] != 0):
+            return False
+        return True
+        
+    def flip(self, red, x, y):
+        if (red == True):
+            self.board_list[y][x] = 1
+        else:
+            self.board_list[y][x] = 2
+    
+    def print_board(self):
+        for y in self.board_list:
+            print(y)
+        print('\n')
+    
+    def check_board(self):
+        l = self.board_list
+        if (l[0] == [1,1,1] or
+            l[1] == [1,1,1] or 
+            l[2] == [1,1,1] or 
+            [l[0][0], l[1][0], l[2][0]] == [1,1,1] or
+            [l[0][1], l[1][1], l[2][1]] == [1,1,1] or
+            [l[0][2], l[1][2], l[2][2]] == [1,1,1] or
+            [l[0][0], l[1][1], l[2][2]] == [1,1,1] or 
+            [l[0][2], l[1][1], l[2][0]] == [1,1,1]):
+            return 1
+        elif (l[0] == [2,2,2] or
+            l[1] == [2,2,2] or 
+            l[2] == [2,2,2] or 
+            [l[0][0], l[1][0], l[2][0]] == [2,2,2] or
+            [l[0][1], l[1][1], l[2][1]] == [2,2,2] or
+            [l[0][2], l[1][2], l[2][2]] == [2,2,2] or
+            [l[0][0], l[1][1], l[2][2]] == [2,2,2] or 
+            [l[0][2], l[1][1], l[2][0]] == [2,2,2]):
+            return 2
+        else:
+            for y in l:
+                for x in y:
+                    if (x == 0):
+                        return 0
+            return 3
