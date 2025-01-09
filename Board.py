@@ -80,3 +80,8 @@ class Board:
             return 2
         else:
             return 0
+    
+    def clear(self):
+        self.board_list = [[0,0,0],
+                  [0,0,0],
+                  [0,0,0]]

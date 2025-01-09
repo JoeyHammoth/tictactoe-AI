@@ -53,7 +53,7 @@ class Minimax:
         score = self.evaluate(board)
         if score == 10 or score == -10 or board.check_board() == 3:
             return score
-        if depth > 2:
+        if depth > 3:
              if score == 10 or score == -10 or score == 5 or score == -5 or board.check_board() == 3:
                  return score
         if isMax: # Maximizing player
