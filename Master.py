@@ -6,10 +6,10 @@ import csv
 
 class Master:
     red = Random()
-    blue = Minimax(True)
     game_board = Board()
     
-    def __init__(self):
+    def __init__(self, max):
+        self.blue = Minimax(True, max)
         pass
 
     def turn(self, player):

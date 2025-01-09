@@ -10,8 +10,9 @@ class Minimax:
         generate_answer(board): Provide the move coord with the best score.
     """
 
-    def __init__(self, red):
+    def __init__(self, red, max_depth):
         self.red = red
+        self.max_depth = max_depth
         pass
 
     def evaluate(self, board):
@@ -24,7 +25,7 @@ class Minimax:
         Returns:
         int: Score of the move.
         """
-
+        
         if (board.check_board() == 1):
             return 10
         elif (board.check_board() == 2):
@@ -53,7 +54,7 @@ class Minimax:
         score = self.evaluate(board)
         if score == 10 or score == -10 or board.check_board() == 3:
             return score
-        if depth > 3:
+        if depth > self.max_depth:
              if score == 10 or score == -10 or score == 5 or score == -5 or board.check_board() == 3:
                  return score
         if isMax: # Maximizing player
