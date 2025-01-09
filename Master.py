@@ -1,15 +1,18 @@
 from Board import Board
 from Random import Random
+from Minimax import Minimax
+
+import csv
 
 red = Random()
-blue = Random()
+blue = Minimax(True)
 game_board = Board()
 win = 0
 
 def turn(player):
     valid = False
     while valid == False:
-        answer = player.generate_answer()
+        answer = player.generate_answer(game_board)
         if (game_board.is_valid_move(answer[0], answer[1]) == True):
             valid = True
     return answer
@@ -31,4 +34,6 @@ while win == 0:
 
 print(win)
 
-        
+with open('result.csv', 'a', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow([win])
