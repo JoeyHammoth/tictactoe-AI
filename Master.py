@@ -1,21 +1,26 @@
 from Board import Board
 from Random import Random
 from Minimax import Minimax
+from MCTS import Mcts
 
+import copy
 import csv
 
 class Master:
     red = Random()
     game_board = Board()
-    
-    def __init__(self, max):
-        self.blue = Minimax(True, max)
-        pass
+
+    def __init__(self, max=-1, c=-1, iterations=1000):
+        if max == -1:
+            self.blue = Mcts(True, c, iterations)
+        else:
+            self.blue = Minimax(True, max)
 
     def turn(self, player):
         valid = False
         while valid == False:
-            answer = player.generate_answer(self.game_board)
+            g_board = copy.deepcopy(self.game_board)
+            answer = player.generate_answer(g_board)
             if (self.game_board.is_valid_move(answer[0], answer[1]) == True):
                 valid = True
         return answer

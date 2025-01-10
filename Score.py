@@ -1,9 +1,12 @@
 import csv
 
-wins = []
-losses = []
-draws = []
+total_wins = []
+total_loss = []
+total_draws = []
 for j in range(1, 11):
+    wins = []
+    losses = []
+    draws = []
     for i in range(5):
         lost = 0
         win = 0
@@ -38,3 +41,12 @@ for j in range(1, 11):
     print("win rate: " + str(sum(wins)/len(wins)))
     print("loss rate: " + str(sum(losses)/len(losses)))
     print("draw rate: " + str(sum(draws)/len(draws)))
+
+    total_wins.append(sum(wins)/len(wins))
+    total_loss.append(sum(losses)/len(losses))
+    total_draws.append(sum(draws)/len(draws))
+
+print('\n')
+print(total_wins)
+print(total_loss)
+print(total_draws)
