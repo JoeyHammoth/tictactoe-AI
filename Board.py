@@ -85,3 +85,13 @@ class Board:
         self.board_list = [[0,0,0],
                   [0,0,0],
                   [0,0,0]]
+     
+    def get_valid_moves(self):
+        valid_moves = []
+        l = self.board_list
+        for y in range(len(l)):
+            for x in range(len(l[y])):
+                if (l[y][x] == 0):
+                    valid_moves.append((x, y))
+        
+        return valid_moves
