@@ -30,9 +30,9 @@ class Minimax:
             return 10
         elif (board.check_board() == 2):
             return -10
-        elif (board.check_twos() == 1):
+        elif (board.check_twos() == 1 or board.check_defence() == 1):
             return 5
-        elif (board.check_twos() == 2):
+        elif (board.check_twos() == 2 or board.check_defence() == 2):
             return -5
         else:
             return 0
