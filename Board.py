@@ -1,4 +1,11 @@
 class Board:
+    """
+    3X3 Board class for tic-tac-toe game. Contains all the relevent methods for retrieving information from and manipulating the game board.
+
+    Methods:
+        
+    """
+
     board_list = [[0,0,0],
                   [0,0,0],
                   [0,0,0]]
@@ -95,3 +102,32 @@ class Board:
                     valid_moves.append((x, y))
         
         return valid_moves
+    
+    def check_defence(self):
+        l = self.board_list
+        vert_1 = [l[0][0], l[1][0], l[2][0]]
+        vert_2 = [l[0][1], l[1][1], l[2][1]]
+        vert_3 = [l[0][2], l[1][2], l[2][2]]
+        diag_1 = [l[0][0], l[1][1], l[2][2]]
+        diag_2 = [l[0][2], l[1][1], l[2][0]]
+        
+        if ((l[0].count(2) == 2 and l[0].count(1) == 1) or
+            (l[1].count(2) == 2 and l[1].count(1) == 1) or
+            (l[2].count(2) == 2 and l[2].count(1) == 1) or
+            (vert_1.count(2) == 2 and vert_1.count(1) == 1) or
+            (vert_2.count(2) == 2 and vert_2.count(1) == 1) or
+            (vert_3.count(2) == 2 and vert_3.count(1) == 1) or
+            (diag_1.count(2) == 2 and diag_1.count(1) == 1) or
+            (diag_2.count(2) == 2 and diag_2.count(1) == 1)):
+            return 1
+        elif ((l[0].count(1) == 2 and l[0].count(2) == 1) or
+            (l[1].count(1) == 2 and l[1].count(2) == 1) or
+            (l[2].count(1) == 2 and l[2].count(2) == 1) or
+            (vert_1.count(1) == 2 and vert_1.count(2) == 1) or
+            (vert_2.count(1) == 2 and vert_2.count(2) == 1) or
+            (vert_3.count(1) == 2 and vert_3.count(2) == 1) or
+            (diag_1.count(1) == 2 and diag_1.count(2) == 1) or
+            (diag_2.count(1) == 2 and diag_2.count(2) == 1)):
+            return 2
+        else:
+            return 0
