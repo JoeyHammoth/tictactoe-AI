@@ -77,7 +77,7 @@ class Nueral:
         results = [result] * len(states)
         return states, moves, results
     
-    def train_tictactoe_model(self, games=1000, epochs=10, batch_size=32):
+    def train_tictactoe_model(self, games=10000000000, epochs=10, batch_size=32):
         states, policies, values = [], [], []
         for _ in range(games):
             s, p, v = self.play_game()
