@@ -2,6 +2,7 @@ from Board import Board
 from Random import Random
 from Minimax import Minimax
 from MCTS import Mcts
+from Neural import Nueral
 
 import copy
 import csv
@@ -10,12 +11,14 @@ class Master:
     red = Random()
     game_board = Board()
 
-    def __init__(self, max=-1, c=-1, iterations=1000):
-        if max == -1:
+    def __init__(self, type=0, max=-1, c=-1, iterations=1000):
+        if type == 0:
             self.blue = Mcts(True, c, iterations)
-        else:
+        elif type == 1:
             self.blue = Minimax(True, max)
-
+        else:
+            self.blue = Nueral()
+        
     def turn(self, player):
         valid = False
         while valid == False:

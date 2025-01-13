@@ -3,7 +3,7 @@ from Master import Master
 import csv
 
 for j in range(1, 11):
-    master = Master(max=j)
+    master = Master(type=1, max=j)
 
     for i in range(5):
         with open('./minimax_tests_2/test_' + str(i) + str(j), 'w', newline='') as file:

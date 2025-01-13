@@ -14,7 +14,7 @@ for j in range(1, 11):
         total = 0
 
         # Open the CSV file in read mode
-        with open('./minimax_tests/test_' + str(i) + str(j), 'r', newline='') as file:
+        with open('./minimax_tests_2/test_' + str(i) + str(j), 'r', newline='') as file:
             reader = csv.reader(file)  # Create a CSV reader object
             
             # Loop through each row in the CSV

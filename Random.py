@@ -11,7 +11,7 @@ class Random:
     def __init__(self):
         pass
 
-    def generate_answer(self, board):
+    def generate_answer(self, board=None):
         """
         Generates a random tuple based on game board size.
 
