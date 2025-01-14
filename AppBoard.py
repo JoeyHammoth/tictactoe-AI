@@ -2,24 +2,40 @@ import tkinter as tk
 
 class AppBoard:
     def __init__(self, root):
+        self.move = (-1, -1)
+        self.state = 1 # 0 = not playing, 1 = playing
+        self.red = True
+        self.move_done = False
+
         self.canvas_board = tk.Canvas(root, width=300, height=300)
         self.canvas_board.pack()
-        self.canvas_board.create_rectangle(0, 0, 100, 100, fill="black")
-        self.canvas_board.create_rectangle(100, 0, 200, 100, fill="white")
-        self.canvas_board.create_rectangle(200, 0, 300, 100, fill="black")
 
-        self.canvas_board.create_rectangle(100, 100, 200, 200, fill="black")
-        self.canvas_board.create_rectangle(100, 200, 200, 300, fill="white")
+        self.rect_1 = self.canvas_board.create_rectangle(0, 0, 100, 100, fill="black")
+        self.rect_2 = self.canvas_board.create_rectangle(100, 0, 200, 100, fill="white")
+        self.rect_3 = self.canvas_board.create_rectangle(200, 0, 300, 100, fill="black")
 
-        self.canvas_board.create_rectangle(200, 100, 300, 200, fill="white")
-        self.canvas_board.create_rectangle(200, 200, 300, 300, fill="black")
+        self.rect_4 = self.canvas_board.create_rectangle(0, 100, 100, 200, fill="white")
+        self.rect_5 = self.canvas_board.create_rectangle(100, 100, 200, 200, fill="black")
+        self.rect_6 = self.canvas_board.create_rectangle(200, 100, 300, 200, fill="white")
 
-        self.canvas_board.create_rectangle(0, 100, 100, 200, fill="white")
-        self.canvas_board.create_rectangle(0, 200, 100, 300, fill="black")
+        self.rect_7 = self.canvas_board.create_rectangle(0, 200, 100, 300, fill="black")
+        self.rect_8 = self.canvas_board.create_rectangle(100, 200, 200, 300, fill="white")
+        self.rect_9 = self.canvas_board.create_rectangle(200, 200, 300, 300, fill="black")
+
+        self.canvas_board.tag_bind(self.rect_1, "<Button-1>", self.pressed_1)
+        self.canvas_board.tag_bind(self.rect_2, "<Button-1>", self.pressed_2)
+        self.canvas_board.tag_bind(self.rect_3, "<Button-1>", self.pressed_3)
+        self.canvas_board.tag_bind(self.rect_4, "<Button-1>", self.pressed_4)
+        self.canvas_board.tag_bind(self.rect_5, "<Button-1>", self.pressed_5)
+        self.canvas_board.tag_bind(self.rect_6, "<Button-1>", self.pressed_6)
+        self.canvas_board.tag_bind(self.rect_7, "<Button-1>", self.pressed_7)
+        self.canvas_board.tag_bind(self.rect_8, "<Button-1>", self.pressed_8)
+        self.canvas_board.tag_bind(self.rect_9, "<Button-1>", self.pressed_9)
 
         self.cross_list = [[],[],[]]
         self.circle_list = [[],[],[]]
         self.line_list = []
+
         # Crosses
 
         # First Row
@@ -122,20 +138,79 @@ class AppBoard:
     
     def hide_all(self):
         # Crosses and Cricles
-        for y_cr, y_ci in zip(self.cross_list, self.circle_list):
-            for x_cr, x_ci in zip(y_cr, y_ci):
-                self.canvas_board.itemconfig(x_cr, state="hidden")
-                self.canvas_board.itemconfig(x_ci, state="hidden")
+        for y in range(0,3):
+            for x in range(0,3):
+                 self.canvas_board.itemconfig(self.circle_list[y][x], state="hidden")
+        
+        for y in range(0,3):
+            for x in range(0,6):
+                 self.canvas_board.itemconfig(self.cross_list[y][x], state="hidden")
         
         # Lines
         for l in self.line_list:
             self.canvas_board.itemconfig(l, state="hidden")
+        
     
     def flip_board(self, coord, red):
         if red:
-            self.canvas_board.itemconfig(self.circle_list[coord[1]][coord[0]], state="normal")
+            self.canvas_board.itemconfig(self.circle_list[coord[0]][coord[1]], state="normal")
         else:
-            self.canvas_board.itemconfig(self.cross_list[coord[1]][coord[0]], state="normal")
+            self.canvas_board.itemconfig(self.cross_list[coord[0]][2 * coord[1]], state="normal")
+            self.canvas_board.itemconfig(self.cross_list[coord[0]][2 * coord[1] + 1], state="normal")
     
     def cross_line(self, num):
         self.canvas_board.itemconfig(self.line_list[num], state="normal")
+
+    def pressed_1(self, event):
+        if self.state == 1:
+            self.move = (0,0)
+            self.flip_board((0,0), self.red)
+            self.move_done = True
+    
+    def pressed_2(self, event):
+        if self.state == 1:
+            self.move = (0,1)
+            self.flip_board((0,1), self.red)
+            self.move_done = True
+    
+    def pressed_3(self, event):
+        if self.state == 1:
+            self.move = (0,2)
+            self.flip_board((0,2), self.red)
+            self.move_done = True
+    
+    def pressed_4(self, event):
+        if self.state == 1:
+            self.move = (1,0)
+            self.flip_board((1,0), self.red)
+            self.move_done = True
+    
+    def pressed_5(self, event):
+        if self.state == 1:
+            self.move = (1,1)
+            self.flip_board((1,1), self.red)
+            self.move_done = True
+    
+    def pressed_6(self, event):
+        if self.state == 1:
+            self.move = (1,2)
+            self.flip_board((1,2), self.red)
+            self.move_done = True
+
+    def pressed_7(self, event):
+        if self.state == 1:
+            self.move = (2,0)
+            self.flip_board((2,0), self.red)
+            self.move_done = True
+    
+    def pressed_8(self, event):
+        if self.state == 1:
+            self.move = (2,1)
+            self.flip_board((2,1), self.red)
+            self.move_done = True
+    
+    def pressed_9(self, event):
+        if self.state == 1:
+            self.move = (2,2)
+            self.flip_board((2,2), self.red)
+            self.move_done = True
