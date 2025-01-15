@@ -40,9 +40,8 @@ class Master:
         win = 0 
         self.game_board.clear()
         count = 0
-
-        while win == 0:
-            with self.condition:
+        with self.condition:
+            while win == 0:
                 if self.type == 3:
                     print("yes")
                     if count > 0:
