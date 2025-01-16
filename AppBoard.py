@@ -214,3 +214,22 @@ class AppBoard:
             self.move = (2,2)
             self.flip_board((2,2), self.red)
             self.move_done = True
+    
+    def create_line(self, num):
+        match num:
+            case 0:
+                self.canvas_board.itemconfig(self.line_list[3], state="normal")
+            case 1:
+                self.canvas_board.itemconfig(self.line_list[4], state="normal")
+            case 2:
+                self.canvas_board.itemconfig(self.line_list[5], state="normal")
+            case 3:
+                self.canvas_board.itemconfig(self.line_list[0], state="normal")
+            case 4:
+                self.canvas_board.itemconfig(self.line_list[1], state="normal")
+            case 5:
+                self.canvas_board.itemconfig(self.line_list[2], state="normal")
+            case 6:
+                self.canvas_board.itemconfig(self.line_list[6], state="normal")
+            case 7:
+                self.canvas_board.itemconfig(self.line_list[7], state="normal")

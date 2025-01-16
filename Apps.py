@@ -46,6 +46,8 @@ def run_game(master, app):
                     break
                 master.human_move = app.move
             app.state = 0
+        if master.game_board.check_board() != 0:
+            app.create_line(master.game_board.check_line())
 
 def start_game(master, app):
     # Reset all the boards and restart threads
