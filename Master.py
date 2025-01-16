@@ -69,6 +69,13 @@ class Master:
                 valid = True
         return answer
     
+    def switch_order_human(self, ai_player):
+        if ai_player:
+            self.blue = self.red
+        else:
+            self.red = self.blue
+        self.ai_player = ai_player
+    
     def run_human(self):
         # Only use this if type == 3
         win = 0 

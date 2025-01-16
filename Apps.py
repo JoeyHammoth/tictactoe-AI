@@ -12,6 +12,9 @@ master = None
 human_score = 0
 ai_score = 0
 draw_score = 0
+sim_status = False
+sim_first_ai_att = []
+sim_second_ai_att = []
 
 def run_game(master, app):
     global human_score, ai_score, draw_score
@@ -94,40 +97,105 @@ def reset_game():
     stop_event.set()
     root.after(100, lambda: start_game(master, appBoard))
 
+# TODO: Fix bug where alg switch does not work with toggling player order
 def toggle_player_order():
     global player_first, master
     if player_first:
         player_first = False
-        master = Master(type=3, ai_player=True)
+        #master = Master(type=3, ai_player=True)
+        master.switch_order_human(True)
     else:
         player_first = True
-        master = Master(type=3, ai_player=False)
+        #master = Master(type=3, ai_player=False)
+        master.switch_order_human(False)
     # TKinter labels don't automatically reflect changes in external variables—they 
     # need to be explicitly updated
     order_label.config(text=f"Player is first: {player_first}") 
 
-def switch_alg(type):
-    global master
+def switch_alg(type, isOpp=False):
+    global master, player_first, sim_status
     try:
-        if type == 0:
-            master = Master(type=3, ai_player=True)
-            ai_type_label.config(text="AI Algorithm Used: Random")
-        elif type == 1:
-            c = int(c_entry.get())
-            iter= int(iter_entry.get())
-        
-            master = Master(type=3, ai_player=True, opp_type=1, opp_c=c, opp_iterations=iter)
-            ai_type_label.config(text="AI Algorithm Used: MCTS")
-        elif type == 2:
-            max_d = int(max_depth_entry.get())
+        if not sim_status:
+            if type == 0:
+                master = Master(type=3, ai_player=not player_first)
+                ai_type_label.config(text="AI Algorithm Used: Random")
+            elif type == 1:
+                c = int(c_entry.get())
+                iter= int(iter_entry.get())
+            
+                master = Master(type=3, ai_player=not player_first, opp_type=1, opp_c=c, opp_iterations=iter)
+                ai_type_label.config(text="AI Algorithm Used: MCTS")
+            elif type == 2:
+                max_d = int(max_depth_entry.get())
 
-            master = Master(type=3, ai_player=True, opp_type=2, opp_max=max_d)
-            ai_type_label.config(text="AI Algorithm Used: Minimax")
-        elif type == 3:
-            games = int(mlp_games_entry.get())
+                master = Master(type=3, ai_player=not player_first, opp_type=2, opp_max=max_d)
+                ai_type_label.config(text="AI Algorithm Used: Minimax")
+            elif type == 3:
+                games = int(mlp_games_entry.get())
 
-            master = Master(type=3, ai_player=True, opp_type=3, opp_games=games)
-            ai_type_label.config(text="AI Algorithm Used: Neural Network")
+                master = Master(type=3, ai_player=not player_first, opp_type=3, opp_games=games)
+                ai_type_label.config(text="AI Algorithm Used: Neural Network")
+        else: # Sim att list format = [type, c, iter, maxd, games]
+            if not isOpp:
+                sim_first_ai_att.clear()
+                if type == 0:
+                    sim_first_ai_att.append(0)
+                    ai_type_label.config(text="AI Algorithm Used: Random")
+                elif type == 1:
+                    c = int(c_entry.get())
+                    iter= int(iter_entry.get())
+                    sim_first_ai_att.append(1)
+                    sim_first_ai_att.append(c)
+                    sim_first_ai_att.append(iter)
+                    sim_first_ai_att.append(0)
+                    sim_first_ai_att.append(0)
+                    ai_type_label.config(text="AI Algorithm Used: MCTS")
+                elif type == 2:
+                    max_d = int(max_depth_entry.get())
+                    sim_first_ai_att.append(2)
+                    sim_first_ai_att.append(0)
+                    sim_first_ai_att.append(0)
+                    sim_first_ai_att.append(max_d)
+                    sim_first_ai_att.append(0)
+                    ai_type_label.config(text="AI Algorithm Used: Minimax")
+                elif type == 3:
+                    games = int(mlp_games_entry.get())
+                    sim_first_ai_att.append(3)
+                    sim_first_ai_att.append(0)
+                    sim_first_ai_att.append(0)
+                    sim_first_ai_att.append(0)
+                    sim_first_ai_att.append(games)
+                    ai_type_label.config(text="AI Algorithm Used: Neural Network")
+            else:
+                sim_second_ai_att.clear()
+                if type == 0:
+                    sim_second_ai_att.append(0)
+                    opp_ai_type_label.config(text="Opponent AI Algorithm Used: Random")
+                elif type == 1:
+                    c = int(opp_c_entry.get())
+                    iter= int(opp_iter_entry.get())
+                    sim_second_ai_att.append(1)
+                    sim_second_ai_att.append(c)
+                    sim_second_ai_att.append(iter)
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(0)
+                    opp_ai_type_label.config(text="Opponent AI Algorithm Used: MCTS")
+                elif type == 2:
+                    max_d = int(opp_max_depth_entry.get())
+                    sim_second_ai_att.append(2)
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(max_d)
+                    sim_second_ai_att.append(0)
+                    opp_ai_type_label.config(text="Opponent AI Algorithm Used: Minimax")
+                elif type == 3:
+                    games = int(opp_mlp_games_entry.get())
+                    sim_second_ai_att.append(3)
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(games)
+                    opp_ai_type_label.config(text="Opponent AI Algorithm Used: Neural Network") 
     except ValueError:
         messagebox.showerror("Error", "Please enter a valid integer!")
 
@@ -138,9 +206,30 @@ def clear_score():
     draw_score = 0
     score_text.config(text=f"Wins: {human_score}     Losses: {ai_score}     Draws: {draw_score}")
 
+def toggle_sim_status():
+    global sim_status
+    if sim_status:
+        sim_status = False
+    else:
+        sim_status = True
+
+def run_sim(app):
+    # Sim att list format = [type, c, iter, maxd, games]
+    global sim_status, sim_first_ai_att, sim_second_ai_att
+    if sim_status:
+        new_master = Master(type=sim_first_ai_att[0], c=sim_first_ai_att[1], iterations=sim_first_ai_att[2], max=sim_first_ai_att[3],
+                            games=sim_first_ai_att[4], opp_type=sim_second_ai_att[0], opp_c=sim_second_ai_att[1], opp_iterations=sim_second_ai_att[2],
+                            opp_max=sim_second_ai_att[3], opp_games=sim_second_ai_att[4])
+        app.state = 0
+        new_master.run()
+        while new_master.game_board.check_board() == 0:
+            app.hide_all()
+            app.game_board = new_master.game_board
+            app.draw_board()
+
 root = tk.Tk()
 root.title("Tic-Tac-Toe")
-root.geometry("600x600")
+root.geometry("600x900")
 
 master = Master(type=3, ai_player=True)
 appBoard = AppBoard(root)
@@ -152,6 +241,14 @@ button_replay =  Button(root, text="Replay", width=25, command=lambda: reset_gam
 score_text = Label(root, text=f"Wins: {human_score}     Losses: {ai_score}     Draws: {draw_score}")
 
 button_clear = Button(root, text="Clear Score", width=25, command=clear_score)
+
+sim_label = Label(root, text=f"AI simulation status: {sim_status}")
+
+button_toggle_sim = Button(root, text="Toggle Simulation", command=toggle_sim_status)
+
+button_run_sim = Button(root, text="Run Simulation", command=lambda: run_sim(appBoard))
+
+# Player
 
 order_label = Label(root, text=f"Player is first: {player_first}")
 
@@ -183,11 +280,42 @@ mm_button = Button(root, text="Switch AI to Minimax", width=25, command=lambda: 
 
 nn_button = Button(root, text="Switch AI to Neural Network", width=25, command=lambda: switch_alg(3))
 
+# Opponent
+
+opp_ai_type_label = Label(root, text="Opponent AI Algorithm Used: Random")
+
+opp_max_depth_label = Label(root, text="Opponent Max Depth")
+
+opp_max_depth_entry = Entry(root)
+
+opp_c_label = Label(root, text="Opponent Exploration Parameter")
+
+opp_c_entry = Entry(root)
+
+opp_iter_label = Label(root, text="Opponent MCTS Iterations")
+
+opp_iter_entry = Entry(root)
+
+opp_mlp_games_label = Label(root, text="Opponent NN No. of Games")
+
+opp_mlp_games_entry = Entry(root)
+
+opp_random_button = Button(root, text="Switch Opponent AI to Random", width=25, command=lambda: switch_alg(0, True))
+
+opp_mcts_button = Button(root, text="Switch Opponent AI to MCTS", width=25, command=lambda: switch_alg(1, True))
+
+opp_mm_button = Button(root, text="Switch Opponent AI to Minimax", width=25, command=lambda: switch_alg(2, True))
+
+opp_nn_button = Button(root, text="Switch Opponent AI to Neural Network", width=25, command=lambda: switch_alg(3, True))
+
 appBoard.canvas_board.grid(row=0, column=0, rowspan=10)
 status_text.grid(row=11, column=0)
 button_replay.grid(row=12, column=0)
 score_text.grid(row=13, column=0)
 button_clear.grid(row=14, column=0)
+sim_label.grid(row=15, column=0)
+button_toggle_sim.grid(row=16, column=0)
+button_run_sim.grid(row=17, column=0)
 
 order_label.grid(row=0, column=1, pady=(0,0))
 button_order.grid(row=1, column=1, pady=(0,0))
@@ -204,6 +332,19 @@ random_button.grid(row=11, column=1, pady=(5,5))
 mcts_button.grid(row=12, column=1, pady=(5,5))
 mm_button.grid(row=13, column=1, pady=(5,5))
 nn_button.grid(row=14, column=1, pady=(5,5))
+opp_ai_type_label.grid(row=15, column=1, pady=(0,0))
+opp_max_depth_label.grid(row=16, column=1, pady=(0,0))
+opp_max_depth_entry.grid(row=17, column=1, pady=(0,0))
+opp_c_label.grid(row=18, column=1, pady=(0,0))
+opp_c_entry.grid(row=19, column=1, pady=(0,0))
+opp_iter_label.grid(row=20, column=1, pady=(0,0))
+opp_iter_entry.grid(row=21, column=1, pady=(0,0))
+opp_mlp_games_label.grid(row=22, column=1, pady=(0,0))
+opp_mlp_games_entry.grid(row=23, column=1, pady=(0,0))
+opp_random_button.grid(row=24, column=1, pady=(5,5))
+opp_mcts_button.grid(row=25, column=1, pady=(5,5))
+opp_mm_button.grid(row=26, column=1, pady=(5,5))
+opp_nn_button.grid(row=27, column=1, pady=(5,5))
 
 
 # Initial game threads running
