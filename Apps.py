@@ -15,6 +15,8 @@ def run_game(master, app):
             app.red = True
             while not stop_event.is_set() and master.game_board.check_board() == 0:
                 app.state = 1
+                app.game_board = master.game_board
+                status_text.config(text="Your turn", fg='white') 
                 app.move_done = False
                 while not stop_event.is_set() and app.move_done == False:
                     stop_event.wait(0.1)
@@ -23,15 +25,23 @@ def run_game(master, app):
                 master.human_move = app.move
                 master.condition.notify()
                 app.state = 0
+                status_text.config(text="AI's turn", fg='white') 
                 master.condition.wait()
                 if stop_event.is_set():
                     break
                 app.flip_board(master.opp_move, False)
+            if master.game_board.check_board() == 2:
+                status_text.config(text="You Loose!", fg='red') 
+            elif master.game_board.check_board() == 1:
+                status_text.config(text="You Win!", fg='green') 
+            elif master.game_board.check_board() == 3:
+                status_text.config(text="It's a Draw!", fg='blue') 
         else:
             app.red = False
             while not stop_event.is_set() and master.game_board.check_board() == 0:
                 master.condition.notify()
                 app.state = 0
+                status_text.config(text="AI's turn", fg='white') 
                 master.condition.wait()
                 if stop_event.is_set():
                     break
@@ -39,6 +49,8 @@ def run_game(master, app):
                 if master.game_board.check_board() != 0:
                     break
                 app.state = 1
+                app.game_board = master.game_board
+                status_text.config(text="Your turn", fg='white') 
                 app.move_done = False
                 while not stop_event.is_set() and app.move_done == False:
                     stop_event.wait(0.1)
@@ -46,8 +58,14 @@ def run_game(master, app):
                     break
                 master.human_move = app.move
             app.state = 0
+            if master.game_board.check_board() == 1:
+                status_text.config(text="You Loose!", fg='red') 
+            elif master.game_board.check_board() == 2:
+                status_text.config(text="You Win!", fg='green') 
+            elif master.game_board.check_board() == 3:
+                status_text.config(text="It's a Draw!", fg='blue') 
         if master.game_board.check_board() != 0:
-            app.create_line(master.game_board.check_line())
+            app.create_line(master.game_board.check_line()) 
 
 def start_game(master, app):
     # Reset all the boards and restart threads
@@ -82,6 +100,9 @@ root.geometry("600x600")
 
 master = Master(type=3, ai_player=True)
 appBoard = AppBoard(root)
+
+status_text = Label(root)
+status_text.pack()
 
 button_replay =  Button(root, text="Replay", width=25, command=lambda: reset_game())
 button_replay.pack()

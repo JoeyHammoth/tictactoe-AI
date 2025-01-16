@@ -1,7 +1,9 @@
 import tkinter as tk
+from Board import Board
 
 class AppBoard:
     def __init__(self, root):
+        self.game_board = Board()
         self.move = (-1, -1)
         self.state = 1 # 0 = not playing, 1 = playing
         self.red = True
@@ -162,55 +164,55 @@ class AppBoard:
         self.canvas_board.itemconfig(self.line_list[num], state="normal")
 
     def pressed_1(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(0,0):
             self.move = (0,0)
             self.flip_board((0,0), self.red)
             self.move_done = True
     
     def pressed_2(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(1,0):
             self.move = (0,1)
             self.flip_board((0,1), self.red)
             self.move_done = True
     
     def pressed_3(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(2,0):
             self.move = (0,2)
             self.flip_board((0,2), self.red)
             self.move_done = True
     
     def pressed_4(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(0,1):
             self.move = (1,0)
             self.flip_board((1,0), self.red)
             self.move_done = True
     
     def pressed_5(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(1,1):
             self.move = (1,1)
             self.flip_board((1,1), self.red)
             self.move_done = True
     
     def pressed_6(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(2,1):
             self.move = (1,2)
             self.flip_board((1,2), self.red)
             self.move_done = True
 
     def pressed_7(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(0,2):
             self.move = (2,0)
             self.flip_board((2,0), self.red)
             self.move_done = True
     
     def pressed_8(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(1,2):
             self.move = (2,1)
             self.flip_board((2,1), self.red)
             self.move_done = True
     
     def pressed_9(self, event):
-        if self.state == 1:
+        if self.state == 1 and self.game_board.is_valid_move(2,2):
             self.move = (2,2)
             self.flip_board((2,2), self.red)
             self.move_done = True
