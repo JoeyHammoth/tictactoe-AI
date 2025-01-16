@@ -10,7 +10,6 @@ class AppBoard:
         self.move_done = False
 
         self.canvas_board = tk.Canvas(root, width=300, height=300)
-        self.canvas_board.pack()
 
         self.rect_1 = self.canvas_board.create_rectangle(0, 0, 100, 100, fill="black")
         self.rect_2 = self.canvas_board.create_rectangle(100, 0, 200, 100, fill="white")

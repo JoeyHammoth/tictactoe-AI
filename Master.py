@@ -11,7 +11,7 @@ import threading
 class Master:
     game_board = Board()
 
-    def __init__(self, type=0, max=-1, c=-1, iterations=1000, ai_player=False, opp_type=0, opp_max=-1, opp_c=-1, opp_iterations=1000):
+    def __init__(self, type=0, max=-1, c=-1, iterations=1000, ai_player=False, opp_type=0, opp_max=-1, opp_c=-1, opp_iterations=1000, games=100000, opp_games=100000):
         # If ai_player is False, Main Player is first, Opp is second
         # Main Player
         if type == 0: #MCTS
@@ -26,9 +26,9 @@ class Master:
                 self.red = Minimax(True, max)
         elif type == 2: #MLP
             if ai_player:
-                self.blue = Nueral()
+                self.blue = Nueral(games)
             else:
-                self.red = Nueral()
+                self.red = Nueral(games)
         else: #HUMAN
             self.human_move = (-1,-1)
             self.condition = threading.Condition()
@@ -52,9 +52,9 @@ class Master:
                 self.blue = Minimax(True, opp_max)
         else:
             if ai_player:
-                self.red = Nueral()
+                self.red = Nueral(opp_games)
             else:
-                self.blue = Nueral()
+                self.blue = Nueral(opp_games)
 
         self.type = type
         self.ai_player = ai_player
