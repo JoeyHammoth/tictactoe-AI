@@ -76,10 +76,13 @@ class Master:
         return answer
     
     def switch_order_human(self, ai_player):
+        # input ai_player is the NEW order
         if ai_player:
-            self.blue = self.red
+            new_blue = copy.deepcopy(self.red)
+            self.blue = new_blue
         else:
-            self.red = self.blue
+            new_red = copy.deepcopy(self.blue)
+            self.red = new_red
         self.ai_player = ai_player
     
     def run_human(self):

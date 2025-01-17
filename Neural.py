@@ -45,6 +45,9 @@ class Nueral:
     def play_game(self):
         random_ai = Random()
         board = Board()  # Initialize an empty board
+        board.board_list = [[0,0,0],
+                            [0,0,0],
+                            [0,0,0]]
         states, moves, results = [], [], []
         current_player = 1  # 1 is Circle, 2 is Cross
 
@@ -78,16 +81,25 @@ class Nueral:
         return states, moves, results
     
     def train_tictactoe_model(self, games, epochs=10, batch_size=32):
+        print(games)
         states, policies, values = [], [], []
         for _ in range(games):
             s, p, v = self.play_game()
             states.extend(s)
             policies.extend(p)
             values.extend(v)
+        
+        print(states)
+        print(policies)
+        print(values)
 
         states = np.array(states)
         policies = np.array(policies)
         values = np.array(values)
+
+        print(states)
+        print(policies)
+        print(values)
 
         # Normalize board state
         states = np.where(states == 2, -1, states)

@@ -1,10 +1,12 @@
 import threading
 import tkinter as tk
+import webbrowser
+
 from tkinter import *
 from AppBoard import AppBoard
 from Master import Master
 from tkinter import messagebox
-import time
+
 
 # Global Stop Event 
 stop_event = threading.Event()
@@ -103,14 +105,14 @@ def reset_game():
 # TODO: Fix bug where alg switch does not work with toggling player order
 def toggle_player_order():
     global player_first, master
-    if player_first:
+    if player_first: # if player is first, new order is second
         player_first = False
         #master = Master(type=3, ai_player=True)
-        master.switch_order_human(True)
+        master.switch_order_human(False)
     else:
         player_first = True
         #master = Master(type=3, ai_player=False)
-        master.switch_order_human(False)
+        master.switch_order_human(True)
     # TKinter labels don't automatically reflect changes in external variables—they 
     # need to be explicitly updated
     order_label.config(text=f"Player is first: {player_first}") 
@@ -256,7 +258,7 @@ def run_sim(app):
         print(new_master.game_history)
 
         def update(index):
-            global is_updating
+            global is_updating, human_score, ai_score, draw_score, player_first
             if index == 0:
                 is_updating = True
             if index < len(new_master.game_history):
@@ -265,17 +267,36 @@ def run_sim(app):
                 app.draw_board(new_master.game_history[index])  # Draw the current board
                 root.after(100, update, index + 1)  # Schedule the next update after 2000 ms
             else:
+                app.create_line(master.game_board.check_line()) 
+                if player_first:
+                    if new_master.game_board.check_board() == 1:
+                        human_score += 1
+                    elif new_master.game_board.check_board() == 2:
+                        ai_score += 1
+                    elif new_master.game_board.check_board() == 3:
+                        draw_score +=1
+                else:
+                    if new_master.game_board.check_board() == 1:
+                        ai_score += 1
+                    elif new_master.game_board.check_board() == 2:
+                        human_score += 1
+                    elif new_master.game_board.check_board() == 3:
+                        draw_score +=1
+                score_text.config(text=f"Wins: {human_score}     Losses: {ai_score}     Draws: {draw_score}")
                 is_updating = False
                 
         update(0)
-        
-        if new_master.game_board.check_board() == 1:
-            human_score += 1
-        elif new_master.game_board.check_board() == 2:
-            ai_score += 1
-        elif new_master.game_board.check_board() == 3:
-            draw_score +=1
-        score_text.config(text=f"Wins: {human_score}     Losses: {ai_score}     Draws: {draw_score}")
+
+def open_webpage(type):
+    match type:
+        case 0:
+            url = "https://github.com/JoeyHammoth/tictactoe-AI" 
+        case 1:
+            url = "https://github.com/JoeyHammoth/tictactoe-AI/wiki"
+    webbrowser.open(url)
+
+def exit():
+    root.destroy()
 
 root = tk.Tk()
 root.title("Tic-Tac-Toe")
@@ -294,9 +315,23 @@ button_clear = Button(root, text="Clear Score", width=25, command=clear_score)
 
 sim_label = Label(root, text=f"AI simulation status: {sim_status}")
 
-button_toggle_sim = Button(root, text="Toggle Simulation", command=lambda: toggle_sim_status(appBoard))
+button_toggle_sim = Button(root, text="Toggle Simulation", width=25, command=lambda: toggle_sim_status(appBoard))
 
-button_run_sim = Button(root, text="Run Simulation", command=lambda: run_sim(appBoard))
+button_run_sim = Button(root, text="Run Simulation", width=25, command=lambda: run_sim(appBoard))
+
+button_repo = Button(root, text="Open Project Repo", width=25, command=lambda: open_webpage(0))
+
+button_wiki = Button(root, text="Open Project Wiki", width=25, command=lambda: open_webpage(1))
+
+button_exit = Button(root, text="Exit", width=25, command=exit)
+
+icon = PhotoImage(file="icon.png")  
+
+icon = icon.subsample(9, 9)
+
+icon_label = Label(root, image=icon)
+
+end_label = Label(root, text="JoeyHammoth 2025")
 
 # Player
 
@@ -363,9 +398,14 @@ status_text.grid(row=11, column=0)
 button_replay.grid(row=12, column=0)
 score_text.grid(row=13, column=0)
 button_clear.grid(row=14, column=0)
-sim_label.grid(row=15, column=0)
-button_toggle_sim.grid(row=16, column=0)
-button_run_sim.grid(row=17, column=0)
+sim_label.grid(row=15, column=0, pady=(5,5))
+button_toggle_sim.grid(row=16, column=0,pady=(5,5))
+button_run_sim.grid(row=17, column=0,pady=(5,5))
+button_repo.grid(row=18, column=0, pady=(5,5))
+button_wiki.grid(row=19, column=0, pady=(5,5))
+button_exit.grid(row=20, column=0, pady=(5,5))
+icon_label.grid(row=21, column=0, rowspan=5, pady=(0,0))
+end_label.grid(row=26, column=0, pady=(0,0))
 
 order_label.grid(row=0, column=1, pady=(0,0))
 button_order.grid(row=1, column=1, pady=(0,0))
