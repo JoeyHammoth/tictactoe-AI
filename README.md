@@ -54,6 +54,10 @@ tic_tac_toe
         └── __init__.cpython-311.pyc
 ```
 
+## Documentation
+For documentation regarding this library of packages, the javadoc can be accessed [here](https://joeyhammoth.github.io/tictactoe-AI/tic_tac_toe.html).
+For more information regarding usage, the wiki can be accessed [here](https://github.com/JoeyHammoth/tictactoe-AI/wiki).
+
 ## Requirements
 
 ### Software Dependencies
@@ -153,6 +157,9 @@ Contributions are welcome! To contribute:
 This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ---
+
+## Authors
+- **JoeyHammoth** - [My GitHub Profile](https://github.com/JoeyHammoth)
 
 ## Acknowledgments
 Special thanks to the open-source community for providing tools and resources that made this project possible.
