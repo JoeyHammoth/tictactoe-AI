@@ -1,0 +1,13 @@
+"filename", "language", "Python", "comment", "blank", "total"
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/Main.py", "Python", 420, 20, 95, 535
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/__init__.py", "Python", 10, 0, 4, 14
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/ai_models/MCTS.py", "Python", 179, 10, 51, 240
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/ai_models/Minimax.py", "Python", 100, 2, 15, 117
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/ai_models/Neural.py", "Python", 135, 9, 42, 186
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/ai_models/Random.py", "Python", 18, 0, 7, 25
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/ai_models/__init__.py", "Python", 11, 0, 2, 13
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/main_assets/AppBoard.py", "Python", 361, 14, 76, 451
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/main_assets/Board.py", "Python", 222, 0, 36, 258
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/main_assets/Master.py", "Python", 182, 11, 35, 228
+"/Users/jamesnikolas/Desktop/tictactoe-AI/tic_tac_toe/main_assets/__init__.py", "Python", 11, 0, 2, 13
+"Total", "-", 1649, 66, 365, 2080
