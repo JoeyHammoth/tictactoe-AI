@@ -8,8 +8,7 @@ import numpy as np
 
 class Nueral:
     def __init__(self, games):
-        self.model = self.train_tictactoe_model()
-        self.games = games
+        self.model = self.train_tictactoe_model(games)
 
     def create_tictactoe_model(self):
         # model = tf.keras.Sequential([
@@ -78,9 +77,9 @@ class Nueral:
         results = [result] * len(states)
         return states, moves, results
     
-    def train_tictactoe_model(self, epochs=10, batch_size=32):
+    def train_tictactoe_model(self, games, epochs=10, batch_size=32):
         states, policies, values = [], [], []
-        for _ in range(self.games):
+        for _ in range(games):
             s, p, v = self.play_game()
             states.extend(s)
             policies.extend(p)

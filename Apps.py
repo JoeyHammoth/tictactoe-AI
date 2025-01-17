@@ -4,6 +4,7 @@ from tkinter import *
 from AppBoard import AppBoard
 from Master import Master
 from tkinter import messagebox
+import time
 
 # Global Stop Event 
 stop_event = threading.Event()
@@ -15,6 +16,7 @@ draw_score = 0
 sim_status = False
 sim_first_ai_att = []
 sim_second_ai_att = []
+is_updating = False
 
 def run_game(master, app):
     global human_score, ai_score, draw_score
@@ -93,9 +95,10 @@ def start_game(master, app):
     threading.Thread(target=master.run_human, daemon=True).start()
 
 def reset_game():
-    # Stop the current game (threads)
-    stop_event.set()
-    root.after(100, lambda: start_game(master, appBoard))
+    if not sim_status:
+        # Stop the current game (threads)
+        stop_event.set()
+        root.after(100, lambda: start_game(master, appBoard))
 
 # TODO: Fix bug where alg switch does not work with toggling player order
 def toggle_player_order():
@@ -139,12 +142,16 @@ def switch_alg(type, isOpp=False):
             if not isOpp:
                 sim_first_ai_att.clear()
                 if type == 0:
+                    sim_first_ai_att.append(-1)
+                    sim_first_ai_att.append(0)
+                    sim_first_ai_att.append(0)
+                    sim_first_ai_att.append(0)
                     sim_first_ai_att.append(0)
                     ai_type_label.config(text="AI Algorithm Used: Random")
                 elif type == 1:
                     c = int(c_entry.get())
                     iter= int(iter_entry.get())
-                    sim_first_ai_att.append(1)
+                    sim_first_ai_att.append(0)
                     sim_first_ai_att.append(c)
                     sim_first_ai_att.append(iter)
                     sim_first_ai_att.append(0)
@@ -152,7 +159,7 @@ def switch_alg(type, isOpp=False):
                     ai_type_label.config(text="AI Algorithm Used: MCTS")
                 elif type == 2:
                     max_d = int(max_depth_entry.get())
-                    sim_first_ai_att.append(2)
+                    sim_first_ai_att.append(1)
                     sim_first_ai_att.append(0)
                     sim_first_ai_att.append(0)
                     sim_first_ai_att.append(max_d)
@@ -160,7 +167,7 @@ def switch_alg(type, isOpp=False):
                     ai_type_label.config(text="AI Algorithm Used: Minimax")
                 elif type == 3:
                     games = int(mlp_games_entry.get())
-                    sim_first_ai_att.append(3)
+                    sim_first_ai_att.append(2)
                     sim_first_ai_att.append(0)
                     sim_first_ai_att.append(0)
                     sim_first_ai_att.append(0)
@@ -169,6 +176,10 @@ def switch_alg(type, isOpp=False):
             else:
                 sim_second_ai_att.clear()
                 if type == 0:
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(0)
+                    sim_second_ai_att.append(0)
                     sim_second_ai_att.append(0)
                     opp_ai_type_label.config(text="Opponent AI Algorithm Used: Random")
                 elif type == 1:
@@ -206,26 +217,65 @@ def clear_score():
     draw_score = 0
     score_text.config(text=f"Wins: {human_score}     Losses: {ai_score}     Draws: {draw_score}")
 
-def toggle_sim_status():
-    global sim_status
+def toggle_sim_status(app):
+    global sim_status, human_score, ai_score, draw_score, master
+    app.state = 0
+    app.hide_all()
+    master.game_board.clear()
     if sim_status:
         sim_status = False
+        status_text.config(text="Player mode activated", fg='white') 
     else:
         sim_status = True
+        status_text.config(text="Simulation mode activated", fg='white') 
+    sim_label.config(text=f"AI simulation status: {sim_status}")
+    clear_score()
 
 def run_sim(app):
     # Sim att list format = [type, c, iter, maxd, games]
-    global sim_status, sim_first_ai_att, sim_second_ai_att
-    if sim_status:
+    global sim_status, sim_first_ai_att, sim_second_ai_att, human_score, ai_score, draw_score, player_first, is_updating
+    if sim_status and not is_updating:
+        print(sim_first_ai_att)
+        print(sim_second_ai_att)
         new_master = Master(type=sim_first_ai_att[0], c=sim_first_ai_att[1], iterations=sim_first_ai_att[2], max=sim_first_ai_att[3],
                             games=sim_first_ai_att[4], opp_type=sim_second_ai_att[0], opp_c=sim_second_ai_att[1], opp_iterations=sim_second_ai_att[2],
-                            opp_max=sim_second_ai_att[3], opp_games=sim_second_ai_att[4])
+                            opp_max=sim_second_ai_att[3], opp_games=sim_second_ai_att[4], ai_player=not player_first)
         app.state = 0
+        app.hide_all()
         new_master.run()
-        while new_master.game_board.check_board() == 0:
-            app.hide_all()
-            app.game_board = new_master.game_board
-            app.draw_board()
+        
+
+        # TODO: Change this so that instead of trying to change it live using a while loop, have Master keep a list
+        # of the game states, wait till the game is done and draw each game state with a pause in between.
+        # while new_master.game_board.check_board() == 0:
+        #     #app.hide_all()
+        #     # app.game_board = new_master.game_board
+        #     # app.draw_board()
+        #     pass
+
+        print(new_master.game_history)
+
+        def update(index):
+            global is_updating
+            if index == 0:
+                is_updating = True
+            if index < len(new_master.game_history):
+                print("ping")
+                print(new_master.game_history[index])
+                app.draw_board(new_master.game_history[index])  # Draw the current board
+                root.after(100, update, index + 1)  # Schedule the next update after 2000 ms
+            else:
+                is_updating = False
+                
+        update(0)
+        
+        if new_master.game_board.check_board() == 1:
+            human_score += 1
+        elif new_master.game_board.check_board() == 2:
+            ai_score += 1
+        elif new_master.game_board.check_board() == 3:
+            draw_score +=1
+        score_text.config(text=f"Wins: {human_score}     Losses: {ai_score}     Draws: {draw_score}")
 
 root = tk.Tk()
 root.title("Tic-Tac-Toe")
@@ -244,7 +294,7 @@ button_clear = Button(root, text="Clear Score", width=25, command=clear_score)
 
 sim_label = Label(root, text=f"AI simulation status: {sim_status}")
 
-button_toggle_sim = Button(root, text="Toggle Simulation", command=toggle_sim_status)
+button_toggle_sim = Button(root, text="Toggle Simulation", command=lambda: toggle_sim_status(appBoard))
 
 button_run_sim = Button(root, text="Run Simulation", command=lambda: run_sim(appBoard))
 
@@ -300,13 +350,13 @@ opp_mlp_games_label = Label(root, text="Opponent NN No. of Games")
 
 opp_mlp_games_entry = Entry(root)
 
-opp_random_button = Button(root, text="Switch Opponent AI to Random", width=25, command=lambda: switch_alg(0, True))
+opp_random_button = Button(root, text="Switch Opponent AI to Random", width=25, command=lambda: switch_alg(0, isOpp=True))
 
-opp_mcts_button = Button(root, text="Switch Opponent AI to MCTS", width=25, command=lambda: switch_alg(1, True))
+opp_mcts_button = Button(root, text="Switch Opponent AI to MCTS", width=25, command=lambda: switch_alg(1, isOpp=True))
 
-opp_mm_button = Button(root, text="Switch Opponent AI to Minimax", width=25, command=lambda: switch_alg(2, True))
+opp_mm_button = Button(root, text="Switch Opponent AI to Minimax", width=25, command=lambda: switch_alg(2, isOpp=True))
 
-opp_nn_button = Button(root, text="Switch Opponent AI to Neural Network", width=25, command=lambda: switch_alg(3, True))
+opp_nn_button = Button(root, text="Switch Opponent AI to Neural Network", width=25, command=lambda: switch_alg(3, isOpp=True))
 
 appBoard.canvas_board.grid(row=0, column=0, rowspan=10)
 status_text.grid(row=11, column=0)

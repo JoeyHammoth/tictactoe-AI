@@ -10,11 +10,17 @@ import threading
 
 class Master:
     game_board = Board()
+    game_history = []
 
     def __init__(self, type=0, max=-1, c=-1, iterations=1000, ai_player=False, opp_type=0, opp_max=-1, opp_c=-1, opp_iterations=1000, games=100000, opp_games=100000):
         # If ai_player is False, Main Player is first, Opp is second
         # Main Player
-        if type == 0: #MCTS
+        if type == -1: # Random
+            if ai_player:
+                self.blue = Random()
+            else:
+                self.red = Random()
+        elif type == 0: #MCTS
             if ai_player:
                 self.blue = Mcts(True, c, iterations)
             else:
@@ -130,10 +136,14 @@ class Master:
     def run(self, filename=0):
         win = 0 
         self.game_board.clear()
+        self.game_history = []
         while win == 0:
             red_answer = self.turn(self.red)
             self.game_board.flip(True, red_answer[0], red_answer[1])
             self.game_board.print_board()
+            print(self.game_board.board_list)
+            self.game_history.append(copy.deepcopy(self.game_board.board_list))
+            print(self.game_history)
             win = self.game_board.check_board()
 
             if (win != 0):
@@ -142,6 +152,9 @@ class Master:
             blue_answer = self.turn(self.blue)
             self.game_board.flip(False, blue_answer[0], blue_answer[1])
             self.game_board.print_board()
+            print(self.game_board.board_list)
+            self.game_history.append(copy.deepcopy(self.game_board.board_list))
+            print(self.game_history)
             win = self.game_board.check_board()
 
         if filename != 0:

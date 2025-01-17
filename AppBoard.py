@@ -235,11 +235,11 @@ class AppBoard:
             case 7:
                 self.canvas_board.itemconfig(self.line_list[7], state="normal")
 
-    def draw_board(self):
+    def draw_board(self, board_list):
         for y in range(0, 3):
             for x in range(0, 3):
-                if self.game_board.board_list[y][x] == 1:
+                if board_list[y][x] == 1:
                     self.canvas_board.itemconfig(self.circle_list[y][x], state="normal")
-                if self.game_board.board_list[y][x] == 2:
+                if board_list[y][x] == 2:
                     self.canvas_board.itemconfig(self.cross_list[y][2 * x], state="normal")
                     self.canvas_board.itemconfig(self.cross_list[y][2 * x + 1], state="normal")
