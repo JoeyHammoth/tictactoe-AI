@@ -95,10 +95,10 @@ python Main.py
 - **AI vs. AI**: Watch two AI strategies compete.
 
 ### Configurations
-You can configure the following in the `config.json` file:
+You can configure the following in the application:
 - AI strategies for each player.
-- Game grid size (default is 3x3).
-- Monte Carlo simulation iterations.
+- Minimax max depth for evaluation function.
+- Monte Carlo simulation iterations and exploration parameter.
 - MLP training parameters.
 
 ---
