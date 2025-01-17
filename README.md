@@ -8,7 +8,7 @@ This project is a study in adversarial AI game-playing algorithms and strategies
 - **Monte Carlo Tree Search (MCTS)**
 - **Multi-Layer Perceptron (MLP)**
 
-The project is implemented in Python and is designed to facilitate learning and experimentation with these AI techniques.
+The project is implemented in Python and is designed to facilitate learning and experimentation with these AI techniques. Latest release can be found [here](https://github.com/JoeyHammoth/tictactoe-AI/releases/tag/v.1.0).
 
 ---
 
