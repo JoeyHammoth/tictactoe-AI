@@ -8,8 +8,8 @@ from main_assets.Master import Master
 from tkinter import messagebox
 
 
-# Global Stop Event 
-stop_event = threading.Event()
+# Global Variables
+stop_event = threading.Event() # Global Stop Event 
 player_first = False
 master = None
 human_score = 0
@@ -21,6 +21,16 @@ sim_second_ai_att = []
 is_updating = False
 
 def run_game(master, app):
+    """
+    Run the game of Tic-Tac-Toe and update the board accordingly 
+    
+    Args:
+        master (Master): The Master object controlling the game
+        app (AppBoard): The AppBoard object to update the board
+        
+    Returns:
+        None
+    """
     global human_score, ai_score, draw_score
     with master.condition:
         if player_first:
@@ -87,6 +97,16 @@ def run_game(master, app):
             score_text.config(text=f"Wins: {human_score}     Losses: {ai_score}     Draws: {draw_score}")
 
 def start_game(master, app):
+    """
+    Start a new game of Tic-Tac-Toe and initialise the game threads 
+    
+    Args:
+        master (Master): The Master object controlling the game
+        app (AppBoard): The AppBoard object to update the board
+        
+    Returns:
+        None
+    """
     # Reset all the boards and restart threads
     app.hide_all()
     master.game_board.clear()
@@ -97,13 +117,31 @@ def start_game(master, app):
     threading.Thread(target=master.run_human, daemon=True).start()
 
 def reset_game():
+    """
+    Reset the game and start a new game 
+        
+    Args:
+        None
+    
+    Returns:
+        None
+    """
     if not sim_status:
         # Stop the current game (threads)
         stop_event.set()
         root.after(100, lambda: start_game(master, appBoard))
 
-# TODO: Fix bug where alg switch does not work with toggling player order
+
 def toggle_player_order():
+    """
+    Toggle the order of the player and AI in the game 
+    
+    Args:
+        None
+    
+    Returns:
+        None
+    """
     global player_first, master
     if player_first: # if player is first, new order is second
         player_first = False
@@ -118,6 +156,16 @@ def toggle_player_order():
     order_label.config(text=f"Player is first: {player_first}") 
 
 def switch_alg(type, isOpp=False):
+    """
+    Switch the AI algorithm used in the game to the specified type
+    
+    Args:
+        type (int): 0 for random, 1 for MCTS, 2 for Minimax, 3 for Neural Network
+        isOpp (bool): True if the opponent AI is being switched
+    
+    Returns:
+        None
+    """
     global master, player_first, sim_status
     try:
         if not sim_status:
@@ -213,6 +261,15 @@ def switch_alg(type, isOpp=False):
         messagebox.showerror("Error", "Please enter a valid integer!")
 
 def clear_score():
+    """
+    Clear the score of the game 
+    
+    Args:
+        None
+    
+    Returns:
+        None
+    """
     global human_score, ai_score, draw_score
     human_score = 0
     ai_score = 0
@@ -220,6 +277,15 @@ def clear_score():
     score_text.config(text=f"Wins: {human_score}     Losses: {ai_score}     Draws: {draw_score}")
 
 def toggle_sim_status(app):
+    """
+    Toggle the simulation status between player and AI mode
+    
+    Args:
+        app (AppBoard): The AppBoard object to update the board
+    
+    Returns:
+        None
+    """
     global sim_status, human_score, ai_score, draw_score, master
     app.state = 0
     app.hide_all()
@@ -234,6 +300,15 @@ def toggle_sim_status(app):
     clear_score()
 
 def run_sim(app):
+    """
+    Run a simulation of the AI vs AI game and update the board accordingly
+    
+    Args:
+        app (AppBoard): The AppBoard object to update the board
+        
+    Returns:
+        None
+    """
     # Sim att list format = [type, c, iter, maxd, games]
     global sim_status, sim_first_ai_att, sim_second_ai_att, human_score, ai_score, draw_score, player_first, is_updating
     if sim_status and not is_updating:
@@ -245,15 +320,6 @@ def run_sim(app):
         app.state = 0
         app.hide_all()
         new_master.run()
-        
-
-        # TODO: Change this so that instead of trying to change it live using a while loop, have Master keep a list
-        # of the game states, wait till the game is done and draw each game state with a pause in between.
-        # while new_master.game_board.check_board() == 0:
-        #     #app.hide_all()
-        #     # app.game_board = new_master.game_board
-        #     # app.draw_board()
-        #     pass
 
         print(new_master.game_history)
 
@@ -288,6 +354,15 @@ def run_sim(app):
         update(0)
 
 def open_webpage(type):
+    """
+    Open the project's GitHub repository or Wiki page in the default web browser
+    
+    Args:
+        type (int): 0 for repository, 1 for wiki
+    
+    Returns:
+        None
+    """
     match type:
         case 0:
             url = "https://github.com/JoeyHammoth/tictactoe-AI" 
@@ -296,14 +371,21 @@ def open_webpage(type):
     webbrowser.open(url)
 
 def exit():
+    """Exit the program"""
     root.destroy()
 
+# Main Tkinter Window
 root = tk.Tk()
 root.title("Tic-Tac-Toe")
 root.geometry("600x900")
 
+# Initialisation of game objects
 master = Master(type=3, ai_player=True)
 appBoard = AppBoard(root)
+
+# Widgets
+
+# Column 0 Widgets
 
 status_text = Label(root)
 
@@ -393,6 +475,10 @@ opp_mm_button = Button(root, text="Switch Opponent AI to Minimax", width=25, com
 
 opp_nn_button = Button(root, text="Switch Opponent AI to Neural Network", width=25, command=lambda: switch_alg(3, isOpp=True))
 
+# Grid Layout
+
+# Column 0 
+
 appBoard.canvas_board.grid(row=0, column=0, rowspan=10)
 status_text.grid(row=11, column=0)
 button_replay.grid(row=12, column=0)
@@ -406,6 +492,8 @@ button_wiki.grid(row=19, column=0, pady=(5,5))
 button_exit.grid(row=20, column=0, pady=(5,5))
 icon_label.grid(row=21, column=0, rowspan=5, pady=(0,0))
 end_label.grid(row=26, column=0, pady=(0,0))
+
+# Column 1
 
 order_label.grid(row=0, column=1, pady=(0,0))
 button_order.grid(row=1, column=1, pady=(0,0))
@@ -435,7 +523,6 @@ opp_random_button.grid(row=24, column=1, pady=(5,5))
 opp_mcts_button.grid(row=25, column=1, pady=(5,5))
 opp_mm_button.grid(row=26, column=1, pady=(5,5))
 opp_nn_button.grid(row=27, column=1, pady=(5,5))
-
 
 # Initial game threads running
 root.after(100, start_game, master, appBoard)

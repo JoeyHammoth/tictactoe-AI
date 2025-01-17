@@ -2,6 +2,80 @@ import tkinter as tk
 from main_assets.Board import Board
 
 class AppBoard:
+    """
+    Class that represents the Tkinter UI board of the game. 
+
+    Attributes:
+    game_board (Board): The game board.
+    move (tuple): The move that the player wants to make.
+    state (int): The state of the game. 0 = not playing, 1 = playing.
+    red (bool): The color of the player.
+    move_done (bool): If the move has been done or not.
+    canvas_board (Canvas): The canvas of the board.
+    rect_1 (Rectangle): The rectangle of the first cell.
+    rect_2 (Rectangle): The rectangle of the second cell.
+    rect_3 (Rectangle): The rectangle of the third cell.
+    rect_4 (Rectangle): The rectangle of the fourth cell.
+    rect_5 (Rectangle): The rectangle of the fifth cell.
+    rect_6 (Rectangle): The rectangle of the sixth cell.
+    rect_7 (Rectangle): The rectangle of the seventh cell.
+    rect_8 (Rectangle): The rectangle of the eighth cell.
+    rect_9 (Rectangle): The rectangle of the ninth cell.
+    cross_list (list): The list of crosses.
+    circle_list (list): The list of circles.
+    line_list (list): The list of lines.
+    cross_1_1 (Line): The first line as part of the cross in the first cell.
+    cross_1_2 (Line): The second line as part of the cross in the first cell.
+    cross_2_1 (Line): The first line as part of the cross in the second cell.
+    cross_2_2 (Line): The second line as part of the cross in the second cell.
+    cross_3_1 (Line): The first line as part of the cross in the third cell.
+    cross_3_2 (Line): The second line as part of the cross in the third cell.
+    cross_4_1 (Line): The first line as part of the cross in the fourth cell.
+    cross_4_2 (Line): The second line as part of the cross in the fourth cell.
+    cross_5_1 (Line): The first line as part of the cross in the fifth cell.
+    cross_5_2 (Line): The second line as part of the cross in the fifth cell.
+    cross_6_1 (Line): The first line as part of the cross in the sixth cell.
+    cross_6_2 (Line): The second line as part of the cross in the sixth cell.
+    cross_7_1 (Line): The first line as part of the cross in the seventh cell.
+    cross_7_2 (Line): The second line as part of the cross in the seventh cell.
+    cross_8_1 (Line): The first line as part of the cross in the eighth cell.
+    cross_8_2 (Line): The second line as part of the cross in the eighth cell.
+    cross_9_1 (Line): The first line as part of the cross in the ninth cell.
+    cross_9_2 (Line): The second line as part of the cross in the ninth cell.
+    circle_1 (Oval): The circle in the first cell.
+    circle_2 (Oval): The circle in the second cell.
+    circle_3 (Oval): The circle in the third cell.
+    circle_4 (Oval): The circle in the fourth cell.
+    circle_5 (Oval): The circle in the fifth cell.
+    circle_6 (Oval): The circle in the sixth cell.
+    circle_7 (Oval): The circle in the seventh cell.
+    circle_8 (Oval): The circle in the eighth cell.
+    circle_9 (Oval): The circle in the ninth cell.
+    line_1 (Line): The line in the first row.
+    line_2 (Line): The line in the second row.
+    line_3 (Line): The line in the third row.
+    line_4 (Line): The line in the first column.
+    line_5 (Line): The line in the second column.
+    line_6 (Line): The line in the third column.
+    line_7 (Line): The line in the first diagonal.
+    line_8 (Line): The line in the second diagonal.
+
+    Methods:
+    hide_all: Hides all the crosses, circles and lines.
+    flip_board: Flips the board.
+    cross_line: Draws a line.
+    pressed_1: Event handler for the first cell.
+    pressed_2: Event handler for the second cell.
+    pressed_3: Event handler for the third cell.
+    pressed_4: Event handler for the fourth cell.
+    pressed_5: Event handler for the fifth cell.
+    pressed_6: Event handler for the sixth cell.
+    pressed_7: Event handler for the seventh cell.
+    pressed_8: Event handler for the eighth cell.
+    pressed_9: Event handler for the ninth cell.
+    create_line: Draws a line.
+    draw_board: Draws the board.
+    """
     def __init__(self, root):
         self.game_board = Board()
         self.move = (-1, -1)
@@ -138,6 +212,16 @@ class AppBoard:
         self.line_list.append(self.line_8)
     
     def hide_all(self):
+        """
+        Hides all the crosses, circles and lines. 
+
+        Args:
+        None
+
+        Returns:
+        None
+        
+        """
         # Crosses and Cricles
         for y in range(0,3):
             for x in range(0,3):
@@ -153,6 +237,16 @@ class AppBoard:
         
     
     def flip_board(self, coord, red):
+        """
+        Turn a specified cell in the Tkinter UI game board into a circle or cross. 
+
+        Args:
+        coord (tuple): The coordinates of the cell.
+        red (bool): The color of the player.
+
+        Returns:
+        None
+        """
         if red:
             self.canvas_board.itemconfig(self.circle_list[coord[0]][coord[1]], state="normal")
         else:
@@ -160,63 +254,164 @@ class AppBoard:
             self.canvas_board.itemconfig(self.cross_list[coord[0]][2 * coord[1] + 1], state="normal")
     
     def cross_line(self, num):
+        """
+        Draws a line in the Tkinter UI game board.
+
+        Args:
+        num (int): The number of the line.
+
+        Returns:
+        None
+        
+        """
         self.canvas_board.itemconfig(self.line_list[num], state="normal")
 
     def pressed_1(self, event):
+        """
+        Event handler for the first cell. 
+
+        Args:
+        event: The event.
+
+        Returns:
+        None
+        """
         if self.state == 1 and self.game_board.is_valid_move(0,0):
             self.move = (0,0)
             self.flip_board((0,0), self.red)
             self.move_done = True
     
     def pressed_2(self, event):
+        """
+        Event handler for the second cell.
+        
+        Args:
+        event: The event.
+        
+        Returns:
+        None
+        """
         if self.state == 1 and self.game_board.is_valid_move(1,0):
             self.move = (0,1)
             self.flip_board((0,1), self.red)
             self.move_done = True
     
     def pressed_3(self, event):
+        """
+        Event handler for the third cell.
+        
+        Args:
+        event: The event.
+        
+        Returns:
+        None
+        
+        """
         if self.state == 1 and self.game_board.is_valid_move(2,0):
             self.move = (0,2)
             self.flip_board((0,2), self.red)
             self.move_done = True
     
     def pressed_4(self, event):
+        """
+        Event handler for the fourth cell.
+        
+        Args:
+        event: The event.
+        
+        Returns:
+        None
+        """
         if self.state == 1 and self.game_board.is_valid_move(0,1):
             self.move = (1,0)
             self.flip_board((1,0), self.red)
             self.move_done = True
     
     def pressed_5(self, event):
+        """
+        Event handler for the fifth cell.
+        
+        Args:
+        event: The event.
+        
+        Returns:
+        None
+        """
         if self.state == 1 and self.game_board.is_valid_move(1,1):
             self.move = (1,1)
             self.flip_board((1,1), self.red)
             self.move_done = True
     
     def pressed_6(self, event):
+        """
+        Event handler for the sixth cell.
+        
+        Args:
+        event: The event.
+        
+        Returns:
+        None
+        """
         if self.state == 1 and self.game_board.is_valid_move(2,1):
             self.move = (1,2)
             self.flip_board((1,2), self.red)
             self.move_done = True
 
     def pressed_7(self, event):
+        """
+        Event handler for the seventh cell.
+        
+        Args:
+        event: The event.
+        
+        Returns:
+        None
+        """
         if self.state == 1 and self.game_board.is_valid_move(0,2):
             self.move = (2,0)
             self.flip_board((2,0), self.red)
             self.move_done = True
     
     def pressed_8(self, event):
+        """
+        Event handler for the eighth cell.
+        
+        Args:
+        event: The event.
+        
+        Returns:
+        None
+        """
         if self.state == 1 and self.game_board.is_valid_move(1,2):
             self.move = (2,1)
             self.flip_board((2,1), self.red)
             self.move_done = True
     
     def pressed_9(self, event):
+        """
+        Event handler for the ninth cell.
+        
+        Args:
+        event: The event.
+        
+        Returns:
+        None
+        """
         if self.state == 1 and self.game_board.is_valid_move(2,2):
             self.move = (2,2)
             self.flip_board((2,2), self.red)
             self.move_done = True
     
     def create_line(self, num):
+        """
+        Draws a line in the Tkinter UI game board.
+        
+        Args:
+        num (int): The number of the line.
+        
+        Returns:
+        None
+        """
         match num:
             case 0:
                 self.canvas_board.itemconfig(self.line_list[3], state="normal")
@@ -236,6 +431,16 @@ class AppBoard:
                 self.canvas_board.itemconfig(self.line_list[7], state="normal")
 
     def draw_board(self, board_list):
+        """
+        Draws the board in the Tkinter UI game board from a provided 2D board list representing 
+        game board from a Board object.
+        
+        Args:
+        board_list (list): The 2D board list.
+        
+        Returns:
+        None
+        """
         for y in range(0, 3):
             for x in range(0, 3):
                 if board_list[y][x] == 1:

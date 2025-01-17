@@ -9,10 +9,39 @@ import csv
 import threading
 
 class Master:
+    """
+    Master class that controls the game and the AI players in the game
+    
+    Attributes:
+    game_board: Board object that represents the game board
+    game_history: List of the game board at each turn
+    type: Type of AI player
+    max: Maximum depth of Minimax
+    c: Exploration constant for MCTS
+    iterations: Number of iterations for MCTS
+    ai_player: Boolean that represents if the AI player is the first player
+    opp_type: Type of the opponent AI player
+    opp_max: Maximum depth of Minimax for the opponent
+    opp_c: Exploration constant for MCTS for the opponent
+    opp_iterations: Number of iterations for MCTS for the opponent
+    games: Number of games for the Nueral network
+    opp_games: Number of games for the opponent's Nueral network
+    human_move: Tuple that represents the move of the human player
+    condition: Condition object for threading
+    opp_move: Tuple that represents the move of the opponent
+
+    Methods:
+    turn: Generates a move for the player
+    switch_order_human: Switches the order of the AI players
+    run_human: Runs the game with a human player
+    run: Runs the game with two AI players
+    
+    """
     game_board = Board()
     game_history = []
 
-    def __init__(self, type=0, max=-1, c=-1, iterations=1000, ai_player=False, opp_type=0, opp_max=-1, opp_c=-1, opp_iterations=1000, games=100000, opp_games=100000):
+    def __init__(self, type=0, max=-1, c=-1, iterations=1000, ai_player=False, opp_type=0, opp_max=-1, opp_c=-1, 
+                 opp_iterations=1000, games=100000, opp_games=100000):
         # If ai_player is False, Main Player is first, Opp is second
         # Main Player
         if type == -1: # Random
@@ -67,6 +96,15 @@ class Master:
         self.opp_type = opp_type
         
     def turn(self, player):
+        """
+        Generates a move for the player
+        
+        Args:
+        player: AI player object
+        
+        Returns:
+        answer: Tuple that represents the move of the player
+        """
         valid = False
         while valid == False:
             g_board = copy.deepcopy(self.game_board)
@@ -76,6 +114,16 @@ class Master:
         return answer
     
     def switch_order_human(self, ai_player):
+        """
+        Switches the order of the AI players and updates the game board accordingly
+        
+        Args:
+        ai_player: Boolean that represents if the AI player is the first player
+
+        Returns:
+        None
+
+        """
         # input ai_player is the NEW order
         if ai_player:
             new_blue = copy.deepcopy(self.red)
@@ -86,6 +134,15 @@ class Master:
         self.ai_player = ai_player
     
     def run_human(self):
+        """
+        Runs the game with a human player
+        
+        Args:
+        None
+        
+        Returns:
+        None
+        """
         # Only use this if type == 3
         win = 0 
         self.game_board.clear()
@@ -137,6 +194,15 @@ class Master:
     
 
     def run(self, filename=0):
+        """
+        Runs the game with two AI players and writes the results to a file if a filename is provided
+        
+        Args:
+        filename: Name of the file to write the results to
+        
+        Returns:
+        None
+        """
         win = 0 
         self.game_board.clear()
         self.game_history = []
