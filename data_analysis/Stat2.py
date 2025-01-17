@@ -1,4 +1,4 @@
-from Master import Master
+from main_assets.Master import Master
 
 import csv
 

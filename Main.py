@@ -3,8 +3,8 @@ import tkinter as tk
 import webbrowser
 
 from tkinter import *
-from AppBoard import AppBoard
-from Master import Master
+from main_assets.AppBoard import AppBoard
+from main_assets.Master import Master
 from tkinter import messagebox
 
 

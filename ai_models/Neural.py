@@ -1,7 +1,7 @@
 import tensorflow as tf
 from keras import layers, models
-from Board import Board
-from Random import Random
+from main_assets.Board import Board
+from ai_models.Random import Random
 import copy
 
 import numpy as np

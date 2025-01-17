@@ -1,5 +1,5 @@
 import tkinter as tk
-from Board import Board
+from main_assets.Board import Board
 
 class AppBoard:
     def __init__(self, root):

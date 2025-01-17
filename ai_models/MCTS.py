@@ -1,6 +1,6 @@
 import math
 import random
-from Board import Board
+from main_assets.Board import Board
 
 class Node:
     def __init__(self, state, parent=None, move=None):

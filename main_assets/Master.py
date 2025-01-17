@@ -1,8 +1,8 @@
-from Board import Board
-from Random import Random
-from Minimax import Minimax
-from MCTS import Mcts
-from Neural import Nueral
+from main_assets.Board import Board
+from ai_models.Random import Random
+from ai_models.Minimax import Minimax
+from ai_models.MCTS import Mcts
+from ai_models.Neural import Nueral
 
 import copy
 import csv
