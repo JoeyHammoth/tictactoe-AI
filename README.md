@@ -143,7 +143,6 @@ A neural network model trained on historical game data to predict optimal moves 
 - Extend to larger grids (e.g., 4x4, 5x5).
 - Experiment with reinforcement learning.
 - Optimize MLP training with larger datasets.
-- Implement a graphical user interface (GUI).
 
 ---
 
