@@ -5,8 +5,8 @@ import os
 import sys
 
 from tkinter import *
-from tic_tac_toe.main_assets.AppBoard import AppBoard
-from tic_tac_toe.main_assets.Master import Master
+from main_assets.AppBoard import AppBoard
+from main_assets.Master import Master
 from tkinter import messagebox
 
 

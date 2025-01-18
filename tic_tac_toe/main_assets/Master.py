@@ -1,8 +1,8 @@
-from tic_tac_toe.main_assets.Board import Board
-from tic_tac_toe.ai_models.Random import Random
-from tic_tac_toe.ai_models.Minimax import Minimax
-from tic_tac_toe.ai_models.MCTS import Mcts
-from tic_tac_toe.ai_models.Neural import Nueral
+from main_assets.Board import Board
+from ai_models.Random import Random
+from ai_models.Minimax import Minimax
+from ai_models.MCTS import Mcts
+from ai_models.Neural import Nueral
 
 import copy
 import csv

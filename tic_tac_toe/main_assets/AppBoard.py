@@ -1,5 +1,5 @@
 import tkinter as tk
-from tic_tac_toe.main_assets.Board import Board
+from main_assets.Board import Board
 
 class AppBoard:
     """
