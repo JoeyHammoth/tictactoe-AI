@@ -1,5 +1,7 @@
 # Tic Tac Toe AI Project
 
+<img src="https://github.com/JoeyHammoth/tictactoe-AI/blob/main/tic_tac_toe/icon.png" alt="logo" width="250">
+
 ## Introduction
 This project is a study in adversarial AI game-playing algorithms and strategies, centered around the classic game of Tic Tac Toe. It investigates various AI approaches to enhance decision-making and gameplay efficiency. The implemented algorithms include:
 
@@ -55,7 +57,7 @@ tic_tac_toe
 ```
 
 ## Documentation
-For documentation regarding this library of packages, the javadoc can be accessed [here](https://joeyhammoth.github.io/tictactoe-AI/tic_tac_toe.html).
+For documentation regarding this library of packages, the pydoc can be accessed [here](https://joeyhammoth.github.io/tictactoe-AI/tic_tac_toe.html).
 For more information regarding usage, the wiki can be accessed [here](https://github.com/JoeyHammoth/tictactoe-AI/wiki).
 
 ## Requirements
@@ -85,10 +87,21 @@ For more information regarding usage, the wiki can be accessed [here](https://gi
 ## Usage
 
 ### Running the Game
+
+<p>
+<img src="https://github.com/JoeyHammoth/tictactoe-AI/blob/main/img/lose.gif" style="display: inline;" alt="loosing-game" width="250">
+
+<img src="https://github.com/JoeyHammoth/tictactoe-AI/blob/main/img/draw.gif" style="display: inline;" alt="draw-game" width="250">
+
+<img src="https://github.com/JoeyHammoth/tictactoe-AI/blob/main/img/sim.gif" style="display: inline;" alt="sim-game" width="250">
+</p>
+
 Run the main script to start the game:
 ```bash
 python Main.py
 ```
+If you're installing the latest release, just unzip and run the executable. If you're running VSCode, you may want to fork the project's runnable branch instead of main 
+due to directory issues.
 
 ### Modes
 - **Player vs. AI**: Play against any AI strategy.
